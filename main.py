@@ -47,7 +47,8 @@ def load_or_create_config():
 
     bot_token = input("Enter your Telegram Bot API key: ").strip()
     chat_id = input("Enter your Telegram Chat ID: ").strip()
-    config = {"bot_token": bot_token, "chat_id": chat_id}
+    node_id = input("Enter a label or number for this node (e.g., 1, 2, 3): ").strip()
+    config = {"bot_token": bot_token, "chat_id": chat_id, "node_id": node_id}
     with open(CONFIG_FILE, "w") as file:
         json.dump(config, file)
     return config
@@ -59,15 +60,16 @@ def main():
     config = load_or_create_config()
     bot_token = config["bot_token"]
     chat_id = config["chat_id"]
+    node_id = config["node_id"]
 
-    print(f"[{timestamp()}] Bot started. Checking node status every 30 minutes.")
+    print(f"[{timestamp()}] Bot started for Node {node_id}. Checking node status every 30 minutes.")
 
     while True:
         number = get_node_status()
         if isinstance(number, int) and 10000 <= number <= 99999:
-            message = f"Node is running fine. Block number: {number}"
+            message = f"[Node {node_id}] Node is running fine. Block number: {number}"
         else:
-            message = "Node is not running properly or returned invalid data."
+            message = f"[Node {node_id}] Node is not running properly or returned invalid data."
         send_telegram_message(bot_token, chat_id, message)
         time.sleep(1800)  # 30 minutes
 
