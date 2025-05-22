@@ -66,7 +66,7 @@ def main():
 
     while True:
         number = get_node_status()
-        if isinstance(number, int) and 10000 <= number <= 99999:
+        if isinstance(number, int) and 0 <= number <= 99999:
             message = f"[Node {node_id}] Node is running fine. Block number: {number}"
         else:
             message = f"[Node {node_id}] Node is not running properly or returned invalid data."
